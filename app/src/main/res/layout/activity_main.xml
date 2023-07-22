@@ -12,6 +12,7 @@
         android:layout_width="@dimen/posts_avatar_size"
         android:layout_height="@dimen/posts_avatar_size"
         android:contentDescription="@string/description_post_author_avatar"
+        android:src="@drawable/post_avatar_drawable"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@sample/posts.json/data/authorAvatar" />
@@ -91,10 +92,10 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginStart="@dimen/icon_margin"
-        android:text="@string/post_likes_score"
         app:layout_constraintBottom_toBottomOf="@+id/post_likes"
         app:layout_constraintStart_toEndOf="@+id/post_likes"
-        app:layout_constraintTop_toTopOf="@+id/post_likes" />
+        app:layout_constraintTop_toTopOf="@+id/post_likes"
+        tools:text="123" />
 
     <ImageView
         android:id="@+id/post_share"
@@ -112,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginStart="@dimen/icon_margin"
-        android:text="@string/post_share_score"
+        tools:text="456"
         app:layout_constraintBottom_toBottomOf="@+id/post_share"
         app:layout_constraintStart_toEndOf="@+id/post_share"
         app:layout_constraintTop_toTopOf="@+id/post_share" />
@@ -134,7 +135,7 @@
         android:layout_height="20dp"
         android:layout_marginTop="@dimen/icon_margin"
         android:layout_marginEnd="@dimen/icon_margin"
-        android:text="@string/post_eye_score"
+        tools:text="789"
         app:layout_constraintEnd_toEndOf="@+id/content"
         app:layout_constraintTop_toBottomOf="@+id/content" />
 

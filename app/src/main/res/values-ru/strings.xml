@@ -7,7 +7,4 @@
     <string name="post_likes">Иконка лайков поста</string>
     <string name="post_share">Иконка репост</string>
     <string name="post_eye">Иконка просмотры поста</string>
-    <string name="post_likes_score">123</string>
-    <string name="post_share_score">456</string>
-    <string name="post_eye_score">789</string>
 </resources>
