@@ -2,8 +2,10 @@ package ru.netology.nmedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
+import ru.netology.nmedia.viewmodel.PostViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -13,43 +15,38 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var postShareScoreStart = 9_999_998
+  //      var postShareScoreStart = 10
 
-        val post = Post(
-            1,
-            "Нетология. Университет интернет-профессий будущего",
-            "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
-            "21 мая в 18:36",
-            likes = 999,
-            likeByMe = false
-        )
+        val viewModel2 by viewModels<PostViewModel>()
+        val viewModel by viewModels<PostViewModel>()
+        viewModel.data.observe(this) { post ->
+            with(binding) {
+                author.text = post.author
+                published.text = post.published
+                content.text = post.content
 
-        with(binding) {
-            author.text = post.author
-            published.text = post.published
-            content.text = post.content
+                postLikes.setImageResource(if (post.likeByMe)R.drawable.ic_favorite_red_24 else R.drawable.ic_favorite_24)
+                postLikesScore.text = RoundingNumbers.scoreDisplay(post.likes)
 
-            if (post.likeByMe) {
-                postLikes.setImageResource(R.drawable.ic_favorite_red_24)
+                postShareScore.text = post.share.toString()
+                postShareScore.text = RoundingNumbers.scoreDisplay(post.share)
+
+
             }
+        }
+        viewModel2.data.observe(this){
 
-            postLikesScore.text = RoundingNumbers().scoreDisplay(post.likes)
+        }
 
-            postLikes.setOnClickListener {
-                post.likeByMe = !post.likeByMe
-                postLikes.setImageResource(
-                    if (post.likeByMe) R.drawable.ic_favorite_red_24 else R.drawable.ic_favorite_24
-                )
-                if (post.likeByMe) post.likes++ else post.likes--
-                postLikesScore.text = RoundingNumbers().scoreDisplay(post.likes)
-            }
+        binding.postLikes.setOnClickListener {
+            viewModel.like()
+        }
 
-            postShareScore.text = RoundingNumbers().scoreDisplay(postShareScoreStart)
+       binding.postShare.setOnClickListener {
+           viewModel.share()
+  //        binding.postShareScore.text = RoundingNumbers.scoreDisplay(post.share)
 
-            postShare.setOnClickListener {
-                postShareScoreStart++
-                postShareScore.text = RoundingNumbers().scoreDisplay(postShareScoreStart)
-            }
+
         }
     }
 }
