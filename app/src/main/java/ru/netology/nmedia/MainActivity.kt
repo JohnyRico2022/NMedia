@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
                 postLikes.setImageResource(if (post.likeByMe)R.drawable.ic_favorite_red_24 else R.drawable.ic_favorite_24)
                 postLikesScore.text = RoundingNumbers.scoreDisplay(post.likes)
 
-                postShareScore.text = post.share.toString()
                 postShareScore.text = RoundingNumbers.scoreDisplay(post.share)
             }
         }
