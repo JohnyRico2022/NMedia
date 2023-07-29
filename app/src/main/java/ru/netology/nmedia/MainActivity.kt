@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
@@ -15,9 +14,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-  //      var postShareScoreStart = 10
-
-        val viewModel2 by viewModels<PostViewModel>()
         val viewModel by viewModels<PostViewModel>()
         viewModel.data.observe(this) { post ->
             with(binding) {
@@ -30,12 +26,7 @@ class MainActivity : AppCompatActivity() {
 
                 postShareScore.text = post.share.toString()
                 postShareScore.text = RoundingNumbers.scoreDisplay(post.share)
-
-
             }
-        }
-        viewModel2.data.observe(this){
-
         }
 
         binding.postLikes.setOnClickListener {
@@ -44,9 +35,6 @@ class MainActivity : AppCompatActivity() {
 
        binding.postShare.setOnClickListener {
            viewModel.share()
-  //        binding.postShareScore.text = RoundingNumbers.scoreDisplay(post.share)
-
-
         }
     }
 }
