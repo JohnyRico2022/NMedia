@@ -2,7 +2,7 @@ package ru.netology.nmedia
 
 import java.math.RoundingMode
 
-class RoundingNumbers {
+object RoundingNumbers {
 
     fun scoreDisplay(number: Int): String {
         val divisionK = number / 1000
