@@ -6,32 +6,100 @@ import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInMemoryImpl : PostRepository {
 
-    private var post = Post(
-        1,
-        "Нетология. Университет интернет-профессий будущего",
-        "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
-        "21 мая в 18:36",
-        likes = 999,
-        share = 99_999,
-        likeByMe = false
+    private var posts = listOf(
+        Post(
+            1,
+            "Нетология. Университет интернет-профессий будущего",
+            "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
+            "21 мая в 18:36",
+            likes = 5,
+            share = 19,
+            likeByMe = false
+        ),
+        Post(
+            2,
+            "Нетология. Университет интернет-профессий будущего",
+            " Тестовый пост №2 ",
+            "22 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
+        Post(
+            3,
+            "Нетология. Университет интернет-профессий будущего",
+            "Тестовый пост №3 ",
+            "23 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
+        Post(
+            4,
+            "Нетология. Университет интернет-профессий будущего",
+            "Тестовый пост №4 ",
+            "24 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
+        Post(
+            5,
+            "Нетология. Университет интернет-профессий будущего",
+            "Тестовый пост №5 ",
+            "25 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
+        Post(
+            6,
+            "Нетология. Университет интернет-профессий будущего",
+            "Тестовый пост №6 ",
+            "26 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
+        Post(
+            7,
+            "Нетология. Университет интернет-профессий будущего",
+            "Тестовый пост №7 ",
+            "27 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
+        Post(
+            8,
+            "Нетология. Университет интернет-профессий будущего",
+            "Тестовый пост №8 ",
+            "28 мая в 18:36",
+            likes = 999,
+            share = 99_999,
+            likeByMe = false
+        ),
     )
 
-    private val data = MutableLiveData(post)
+    private val data = MutableLiveData(posts)
+    override fun getAll(): LiveData<List<Post>> = data
 
-    override fun get(): LiveData<Post> = data
+    override fun likeById(id: Long) {
+        posts = posts.map {
+            if (it.id != id) it else {
 
-    override fun like() {
-        post = post.copy(
-            likes = if (post.likeByMe) post.likes - 1 else post.likes + 1,
-            likeByMe = !post.likeByMe
-        )
-        data.value = post
+                if (it.likeByMe)
+                    it.copy(likeByMe = !it.likeByMe, likes = it.likes - 1)
+                else it.copy(likeByMe = !it.likeByMe, likes = it.likes + 1)
+            }
+        }
+        data.value = posts
     }
 
-    override fun share() {
-        post = post.copy(
-            share = post.share + 1
-        )
-        data.value = post
+    override fun shareCounter(id: Long) {
+        posts = posts.map {
+            if (it.id != id) it else it.copy(share = it.share + 1)
+        }
+        data.value = posts
     }
 }
