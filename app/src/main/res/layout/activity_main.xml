@@ -77,7 +77,7 @@
             android:id="@+id/edit_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Edit Message"
+            android:text="@string/edit_message"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/edit_original_text"
@@ -89,7 +89,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="6"
-            android:text="Оригинальный текст Поста"
+            tools:text="Оригинальный текст Поста"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/edit_cancel"
             app:layout_constraintStart_toEndOf="@id/edit_logo" />
