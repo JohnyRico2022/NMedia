@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             override fun share(post: Post) {
                 viewModel.shareCounter(post.id)
             }
-
         })
 
         binding.recyclerView.adapter = adapter
@@ -66,19 +65,22 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, R.string.error_empty_content, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-
             viewModel.changeContent(text)
             viewModel.save()
 
             binding.editText.setText("")
             binding.editText.clearFocus()
             AndroidUtils.hideKeyboard(it)
-            binding.editOriginalText.text = ""
-            binding.group.visibility = View.GONE
         }
 
         binding.editCancel.setOnClickListener {
-            binding.editText.setText(binding.editOriginalText.text)
+            binding.editOriginalText.text = ""
+            binding.editText.setText("")
+            binding.group.visibility = View.GONE
+
+
+            viewModel.save()
+
         }
     }
 }
