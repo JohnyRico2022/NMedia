@@ -44,14 +44,12 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            postLikes.setImageResource(
-                if (post.likeByMe) R.drawable.ic_favorite_red_24 else R.drawable.ic_favorite_24
-            )
-            postLikesScore.text = RoundingNumbers.scoreDisplay(post.likes)
+            postLikes.isChecked = post.likeByMe
+            postLikes.text = RoundingNumbers.scoreDisplay(post.likes)
             postLikes.setOnClickListener {
                 onInteractionListener.like(post)
             }
-            postShareScore.text = RoundingNumbers.scoreDisplay(post.share)
+            postShare.text = RoundingNumbers.scoreDisplay(post.share)
             postShare.setOnClickListener {
                 onInteractionListener.share(post)
             }
