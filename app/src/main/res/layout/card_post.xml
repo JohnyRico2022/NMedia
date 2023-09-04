@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/common_spacing"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <ImageView
         android:id="@+id/avatar"
@@ -53,9 +53,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/description_post_menu"
+        app:icon="@drawable/ic_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:icon="@drawable/ic_more_vert_24" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
@@ -97,26 +97,15 @@
         app:layout_constraintStart_toEndOf="@+id/post_likes"
         app:layout_constraintTop_toBottomOf="@+id/content" />
 
-    <ImageView
-        android:id="@+id/post_eye"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:layout_marginEnd="@dimen/icon_margin"
-        android:contentDescription="@string/post_eye"
-        android:src="@drawable/ic_eye_24"
-        app:layout_constraintBottom_toBottomOf="@+id/post_eye_score"
-        app:layout_constraintEnd_toStartOf="@+id/post_eye_score"
-        app:layout_constraintTop_toTopOf="@+id/post_eye_score" />
-
-    <TextView
-        android:id="@+id/post_eye_score"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/post_views"
+        style="@style/Widget.AppTheme.MyButton"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/icon_margin"
-        android:layout_marginEnd="@dimen/icon_margin"
-        app:layout_constraintEnd_toEndOf="@+id/content"
-        app:layout_constraintTop_toBottomOf="@+id/content"
-        tools:text="789" />
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/post_views"
+        app:icon="@drawable/ic_eye_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

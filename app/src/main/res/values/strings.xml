@@ -5,11 +5,16 @@
     <string name="description_post_menu">Post menu</string>
     <string name="post_likes">Post likes</string>
     <string name="post_share">Post share</string>
-    <string name="post_eye">Post eye</string>
+    <string name="post_views">Post eye</string>
     <string name="menu_remove">Remove</string>
     <string name="menu_edit">Edit</string>
     <string name="post_text">Post text</string>
     <string name="error_empty_content">Content can\'t be empty</string>
     <string name="edit_message">Edit Message</string>
+    <string name="add_post">Add new post</string>
+    <string name="ok">OK</string>
+    <string name="cancel">cancel</string>
+    <string name="chooser_share_post">Share</string>
+
 
 </resources>
