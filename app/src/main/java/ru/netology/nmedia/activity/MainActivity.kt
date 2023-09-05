@@ -3,7 +3,6 @@ package ru.netology.nmedia.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.result.launch
 import androidx.activity.viewModels
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -30,14 +29,14 @@ class MainActivity : AppCompatActivity() {
                 viewModel.removeById(post.id)
             }
 
-
-            val editPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->
+            val editPostLauncher = registerForActivityResult(PostResultContract()) { result ->
                 result ?: return@registerForActivityResult
                 viewModel.changeContent(result)
                 viewModel.save()
             }
             override fun edit(post: Post) {
                 editPostLauncher.launch(post.content)
+                viewModel.edit(post)
             }
 
             override fun share(post: Post) {
@@ -62,16 +61,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val newPostLauncher = registerForActivityResult(NewPostResultContract()) { result ->
+        val newPostLauncher = registerForActivityResult(PostResultContract()) { result ->
             result ?: return@registerForActivityResult
             viewModel.changeContent(result)
             viewModel.save()
         }
 
         binding.addPostButton.setOnClickListener {
-            newPostLauncher.launch()
+            newPostLauncher.launch("")
         }
-
     }
-
 }

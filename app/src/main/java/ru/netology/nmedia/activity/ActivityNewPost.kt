@@ -15,6 +15,8 @@ class ActivityNewPost : AppCompatActivity() {
 
         binding.edit.requestFocus()
 
+        binding.edit.setText(intent.extras?.getString(Intent.EXTRA_TITLE))
+
         binding.ok.setOnClickListener {
             val intent = Intent()
             if (binding.edit.text.isNullOrBlank()) {
