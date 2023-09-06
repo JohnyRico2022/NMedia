@@ -15,7 +15,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             "21 мая в 18:36",
             likes = 5,
             share = 19,
-            likeByMe = false
+            likeByMe = false,
+            video = ""
         ),
         Post(
             nextId++,
@@ -24,7 +25,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             "22 мая в 18:36",
             likes = 999,
             share = 99_999,
-            likeByMe = false
+            likeByMe = false,
+            video = "https://www.youtube.com/watch?v=WhWc3b3KhnY"
         ),
         Post(
             nextId++,
@@ -33,7 +35,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             "23 мая в 18:36",
             likes = 999,
             share = 99_999,
-            likeByMe = false
+            likeByMe = false,
+            video = ""
         ),
         Post(
             nextId++,
@@ -42,7 +45,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             "24 мая в 18:36",
             likes = 999,
             share = 99_999,
-            likeByMe = false
+            likeByMe = false,
+            video = ""
         ),
         Post(
             nextId++,
@@ -51,35 +55,9 @@ class PostRepositoryInMemoryImpl : PostRepository {
             "25 мая в 18:36",
             likes = 999,
             share = 99_999,
-            likeByMe = false
-        ),
-        Post(
-            nextId++,
-            "Нетология. Университет интернет-профессий будущего",
-            "Тестовый пост №6 ",
-            "26 мая в 18:36",
-            likes = 999,
-            share = 99_999,
-            likeByMe = false
-        ),
-        Post(
-            nextId++,
-            "Нетология. Университет интернет-профессий будущего",
-            "Тестовый пост №7 ",
-            "27 мая в 18:36",
-            likes = 999,
-            share = 99_999,
-            likeByMe = false
-        ),
-        Post(
-            nextId++,
-            "Нетология. Университет интернет-профессий будущего",
-            "Тестовый пост №8 ",
-            "28 мая в 18:36",
-            likes = 999,
-            share = 99_999,
-            likeByMe = false
-        ),
+            likeByMe = false,
+            video = ""
+        )
     )
 
     private val data = MutableLiveData(posts)

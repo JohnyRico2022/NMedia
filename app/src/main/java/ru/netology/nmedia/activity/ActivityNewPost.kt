@@ -13,20 +13,23 @@ class ActivityNewPost : AppCompatActivity() {
         binding = ActivityNewPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.edit.requestFocus()
+        binding.apply {
 
-        binding.edit.setText(intent.extras?.getString(Intent.EXTRA_TITLE))
+            edit.setText(intent.extras?.getString(Intent.EXTRA_TITLE))
 
-        binding.ok.setOnClickListener {
-            val intent = Intent()
-            if (binding.edit.text.isNullOrBlank()) {
-                setResult(Activity.RESULT_CANCELED, intent)
-            } else {
-                val content = binding.edit.text.toString()
-                intent.putExtra(Intent.EXTRA_TEXT, content)
-                setResult(Activity.RESULT_OK, intent)
+            edit.requestFocus()
+
+            ok.setOnClickListener {
+                val intent = Intent()
+                if (binding.edit.text.isNullOrBlank()) {
+                    setResult(Activity.RESULT_CANCELED, intent)
+                } else {
+                    val content = binding.edit.text.toString()
+                    intent.putExtra(Intent.EXTRA_TEXT, content)
+                    setResult(Activity.RESULT_OK, intent)
+                }
+                finish()
             }
-            finish()
         }
     }
 }

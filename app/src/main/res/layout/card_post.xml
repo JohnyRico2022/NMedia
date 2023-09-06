@@ -75,6 +75,19 @@
         app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:text="@sample/posts.json/data/content" />
 
+    <ImageView
+        android:id="@+id/video"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content"
+        android:visibility="visible"
+        android:src="@drawable/youtube_logo"
+        android:clickable="true"
+        android:focusable="true" />
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/post_likes"
         style="@style/Widget.AppTheme.LikeButton"
@@ -84,7 +97,7 @@
         android:contentDescription="@string/post_likes"
         app:icon="@drawable/ic_like_selector"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
+        app:layout_constraintTop_toBottomOf="@+id/video" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/post_share"
@@ -95,7 +108,7 @@
         android:contentDescription="@string/post_share"
         app:icon="@drawable/ic_share_24"
         app:layout_constraintStart_toEndOf="@+id/post_likes"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
+        app:layout_constraintTop_toBottomOf="@+id/video" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/post_views"
@@ -105,7 +118,7 @@
         android:contentDescription="@string/post_views"
         app:icon="@drawable/ic_eye_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/video" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

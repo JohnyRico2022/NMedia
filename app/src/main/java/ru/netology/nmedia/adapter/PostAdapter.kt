@@ -3,6 +3,7 @@ package ru.netology.nmedia.adapter
 import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -19,6 +20,7 @@ interface OnInteractionListener{
     fun remove(post: Post)
     fun edit(post: Post)
     fun share(post: Post)
+    fun video(post: Post)
 }
 
 class PostAdapter(
@@ -42,8 +44,15 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root){
+
+
     fun bind(post: Post) {
         binding.apply {
+
+            if (post.video == ""){
+                video.visibility = View.GONE
+            }
+
             author.text = post.author
             published.text = post.published
             content.text = post.content
@@ -73,6 +82,10 @@ class PostViewHolder(
                         }
                     }
                 }.show()
+            }
+
+            binding.video.setOnClickListener {
+                onInteractionListener.video(post)
             }
         }
     }
