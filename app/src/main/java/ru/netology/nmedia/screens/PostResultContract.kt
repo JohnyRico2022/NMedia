@@ -1,4 +1,4 @@
-package ru.netology.nmedia.activity
+package ru.netology.nmedia.screens
 
 import android.app.Activity
 import android.content.Context
@@ -7,7 +7,7 @@ import androidx.activity.result.contract.ActivityResultContract
 
 class PostResultContract : ActivityResultContract<String, String?>() {
     override fun createIntent(context: Context, input: String): Intent =
-        Intent(context, ActivityNewPost::class.java)
+        Intent(context, NewPostFragment::class.java)
             .putExtra(Intent.EXTRA_TITLE, input)
 
     override fun parseResult(resultCode: Int, intent: Intent?): String? =
