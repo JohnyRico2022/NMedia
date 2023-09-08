@@ -1,12 +1,10 @@
 package ru.netology.nmedia.adapter
 
-import android.app.Activity
-import android.content.Context
+
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +13,7 @@ import ru.netology.nmedia.util.RoundingNumbers
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 
-interface OnInteractionListener{
+interface OnInteractionListener {
     fun like(post: Post)
     fun remove(post: Post)
     fun edit(post: Post)
@@ -29,7 +27,7 @@ class PostAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(binding, onInteractionListener)
     }
 
@@ -43,15 +41,13 @@ class PostAdapter(
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener
-) : RecyclerView.ViewHolder(binding.root){
+) : RecyclerView.ViewHolder(binding.root) {
 
 
     fun bind(post: Post) {
         binding.apply {
 
-            if (post.video == ""){
-                video.visibility = View.GONE
-            }
+            video.isVisible = post.video.isNotEmpty()
 
             author.text = post.author
             published.text = post.published
@@ -69,15 +65,17 @@ class PostViewHolder(
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.menu_options)
                     setOnMenuItemClickListener { item ->
-                        when(item.itemId){
+                        when (item.itemId) {
                             R.id.remove -> {
                                 onInteractionListener.remove(post)
                                 true
                             }
-                            R.id.edit ->{
+
+                            R.id.edit -> {
                                 onInteractionListener.edit(post)
                                 true
                             }
+
                             else -> false
                         }
                     }
@@ -91,7 +89,7 @@ class PostViewHolder(
     }
 }
 
-class PostDiffCallBack: DiffUtil.ItemCallback<Post>(){
+class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem.id == newItem.id
     }

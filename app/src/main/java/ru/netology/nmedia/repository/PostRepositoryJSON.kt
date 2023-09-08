@@ -40,7 +40,6 @@ class PostRepositoryJSON (private val context: Context
         data.value = posts
     }
 
-
     override fun getAll(): LiveData<List<Post>> = data
 
     override fun likeById(id: Long) {

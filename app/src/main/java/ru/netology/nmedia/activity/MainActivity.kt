@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -22,6 +21,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: PostViewModel by viewModels()
+
+        val postLauncher = registerForActivityResult(PostResultContract()) { result ->
+            result ?: return@registerForActivityResult
+            viewModel.changeContent(result)
+            viewModel.save()
+        }
+
         val adapter = PostAdapter(object : OnInteractionListener {
 
             override fun like(post: Post) {
@@ -31,13 +37,8 @@ class MainActivity : AppCompatActivity() {
                 viewModel.removeById(post.id)
             }
 
-            val editPostLauncher = registerForActivityResult(PostResultContract()) { result ->
-                result ?: return@registerForActivityResult
-                viewModel.changeContent(result)
-                viewModel.save()
-            }
             override fun edit(post: Post) {
-                editPostLauncher.launch(post.content)
+                postLauncher.launch(post.content)
                 viewModel.edit(post)
             }
 
@@ -53,20 +54,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun video(post: Post) {
-
                 val intent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     data = Uri.parse("https://www.youtube.com/watch?v=WhWc3b3KhnY")
                 }
-
                 val playVideo = Intent.createChooser(intent, "play Video")
                 startActivity(playVideo)
- //               Toast.makeText(this@MainActivity, "video play", Toast.LENGTH_SHORT).show()
+
             }
         })
-
-
-
 
         binding.recyclerView.adapter = adapter
         viewModel.data.observe(this) { posts ->
@@ -78,14 +74,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val newPostLauncher = registerForActivityResult(PostResultContract()) { result ->
-            result ?: return@registerForActivityResult
-            viewModel.changeContent(result)
-            viewModel.save()
-        }
-
         binding.addPostButton.setOnClickListener {
-            newPostLauncher.launch("")
+            postLauncher.launch("")
         }
     }
 }
