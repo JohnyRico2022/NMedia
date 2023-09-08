@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -34,14 +35,13 @@ class FeedFragment : Fragment() {
                 viewModel.removeById(post.id)
             }
 
-            val editPostLauncher = registerForActivityResult(PostResultContract()) { result ->
-                result ?: return@registerForActivityResult
-                viewModel.changeContent(result)
-                viewModel.save()
-            }
-
             override fun edit(post: Post) {
-                editPostLauncher.launch(post.content)
+                val text = post.content
+                findNavController()
+                    .navigate(
+                        R.id.action_feedFragment_to_newPostFragment,
+                        bundleOf("content" to text)
+                    )
                 viewModel.edit(post)
             }
 
@@ -83,7 +83,6 @@ class FeedFragment : Fragment() {
 
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
-
         return binding.root
     }
 }

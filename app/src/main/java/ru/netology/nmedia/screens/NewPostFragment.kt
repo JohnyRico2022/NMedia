@@ -11,6 +11,8 @@ import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class NewPostFragment : Fragment() {
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,9 +22,12 @@ class NewPostFragment : Fragment() {
 
         val viewModel: PostViewModel by activityViewModels()
 
-        binding.apply {
+        val text = arguments?.getString("content")
+        if (text != null) {
+            binding.edit.setText(text)
+        }
 
-            //           edit.setText(intent.extras?.getString(Intent.EXTRA_TITLE))
+        binding.apply {
 
             edit.requestFocus()
 

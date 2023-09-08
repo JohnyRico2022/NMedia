@@ -10,7 +10,6 @@ import ru.netology.nmedia.dto.Post
 class PostRepositoryJSON (private val context: Context
 ) : PostRepository {
 
-
     private val gson = Gson()
     private var nextId = 1L
     private var posts = emptyList<Post>()
@@ -39,7 +38,6 @@ class PostRepositoryJSON (private val context: Context
         }
         data.value = posts
     }
-
 
     override fun getAll(): LiveData<List<Post>> = data
 
