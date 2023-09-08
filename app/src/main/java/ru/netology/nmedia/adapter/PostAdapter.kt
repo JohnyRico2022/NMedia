@@ -1,13 +1,17 @@
 package ru.netology.nmedia.adapter
 
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
-import ru.netology.nmedia.RoundingNumbers
+import ru.netology.nmedia.util.RoundingNumbers
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 
@@ -16,6 +20,7 @@ interface OnInteractionListener{
     fun remove(post: Post)
     fun edit(post: Post)
     fun share(post: Post)
+    fun video(post: Post)
 }
 
 class PostAdapter(
@@ -39,8 +44,15 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener
 ) : RecyclerView.ViewHolder(binding.root){
+
+
     fun bind(post: Post) {
         binding.apply {
+
+            if (post.video == ""){
+                video.visibility = View.GONE
+            }
+
             author.text = post.author
             published.text = post.published
             content.text = post.content
@@ -70,6 +82,10 @@ class PostViewHolder(
                         }
                     }
                 }.show()
+            }
+
+            binding.video.setOnClickListener {
+                onInteractionListener.video(post)
             }
         }
     }

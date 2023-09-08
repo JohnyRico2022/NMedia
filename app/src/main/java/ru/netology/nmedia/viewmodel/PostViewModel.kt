@@ -14,7 +14,8 @@ private val empty = Post(
     published = "",
     likes = 0,
     share = 0,
-    likeByMe = false
+    likeByMe = false,
+    video = ""
 )
 
 class PostViewModel: ViewModel() {
@@ -48,4 +49,5 @@ class PostViewModel: ViewModel() {
     fun edit(post: Post) {
        edited.value = post
     }
+
 }
