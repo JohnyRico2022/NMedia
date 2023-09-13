@@ -3,50 +3,48 @@ package ru.netology.nmedia.screens
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
-import ru.netology.nmedia.adapter.PostAdapter
-import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.adapter.PostViewHolder
+import ru.netology.nmedia.databinding.FragmentDetailBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.util.StringArg
+import ru.netology.nmedia.screens.FeedFragment.Companion.textArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
-class FeedFragment : Fragment() {
+
+class DetailFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentFeedBinding.inflate(inflater, container, false)
+        val binding = FragmentDetailBinding.inflate(inflater, container, false)
         val viewModel: PostViewModel by viewModels(
             ownerProducer = ::requireParentFragment
         )
 
-
-        val interactionListener = object : OnInteractionListener {
+        val listener = object : OnInteractionListener {
 
             override fun like(post: Post) {
                 viewModel.likeById(post.id)
             }
-
             override fun remove(post: Post) {
                 viewModel.removeById(post.id)
+                findNavController().navigate(R.id.action_detailFragment_to_feedFragment)
             }
-
             override fun edit(post: Post) {
                 val text = post.content
-                findNavController().navigate(
+                findNavController()
+                    .navigate(
                         R.id.action_feedFragment_to_newPostFragment,
-                    Bundle().apply {
-                        textArg = text
-                    }
+                        bundleOf("content" to text)
                     )
                 viewModel.edit(post)
             }
@@ -64,7 +62,6 @@ class FeedFragment : Fragment() {
             }
 
             override fun video(post: Post) {
-
                 val intent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     data = Uri.parse("https://www.youtube.com/watch?v=WhWc3b3KhnY")
@@ -75,42 +72,23 @@ class FeedFragment : Fragment() {
             }
 
             override fun actionOnFragment(post: Post) {
-                findNavController()
-                    .navigate(
-                        R.id.action_feedFragment_to_detailFragment,
-                        Bundle().apply {
-                            textArg = post.id.toString()
-                        }
-                       /* bundleOf(
-                            KEY_AUTHOR to author,
-                            KEY_CONTENT to content,
-                            KEY_PUBLISHED to published
-                        )*/
-                    )
+
             }
         }
 
-        val adapter = PostAdapter(interactionListener)
+        val currentPostId = requireArguments().textArg!!.toLong()
 
-        binding.recyclerView.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val newPost = posts.size > adapter.currentList.size
-            adapter.submitList(posts) {
-                if (newPost) {
-                    binding.recyclerView.smoothScrollToPosition(0)
-                }
+
+        binding.post.apply{
+
+            viewModel.data.observe(viewLifecycleOwner){it ->
+                val viewHolder = PostViewHolder(binding.post, listener)
+                val post = it.find { it.id == currentPostId}
+                post?.let {
+                    viewHolder.bind(post) }
+
             }
         }
-
-        binding.addPostButton.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
-        }
-
         return binding.root
     }
-    companion object {
-
-        var Bundle.textArg: String? by StringArg
-    }
-
 }

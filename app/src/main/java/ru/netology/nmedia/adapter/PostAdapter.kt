@@ -18,6 +18,7 @@ interface OnInteractionListener{
     fun edit(post: Post)
     fun share(post: Post)
     fun video(post: Post)
+    fun actionOnFragment(post: Post)
 }
 
 class PostAdapter(
@@ -81,8 +82,17 @@ class PostViewHolder(
                 }.show()
             }
 
-            binding.video.setOnClickListener {
+            video.setOnClickListener {
                 onInteractionListener.video(post)
+            }
+            content.setOnClickListener {
+                onInteractionListener.actionOnFragment(post)
+            }
+            author.setOnClickListener {
+                onInteractionListener.actionOnFragment(post)
+            }
+            published.setOnClickListener {
+                onInteractionListener.actionOnFragment(post)
             }
         }
     }
