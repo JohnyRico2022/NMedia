@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
@@ -43,9 +42,10 @@ class DetailFragment : Fragment() {
                 val text = post.content
                 findNavController()
                     .navigate(
-                        R.id.action_feedFragment_to_newPostFragment,
-                        bundleOf("content" to text)
-                    )
+                        R.id.action_detailFragment_to_newPostFragment,
+                        Bundle().apply {
+                            textArg = text
+                        })
                 viewModel.edit(post)
             }
 
@@ -72,12 +72,10 @@ class DetailFragment : Fragment() {
             }
 
             override fun actionOnFragment(post: Post) {
-
             }
         }
 
         val currentPostId = requireArguments().textArg!!.toLong()
-
 
         binding.post.apply{
 
@@ -86,7 +84,6 @@ class DetailFragment : Fragment() {
                 val post = it.find { it.id == currentPostId}
                 post?.let {
                     viewHolder.bind(post) }
-
             }
         }
         return binding.root

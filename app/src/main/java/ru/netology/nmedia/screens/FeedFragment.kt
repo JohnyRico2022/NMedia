@@ -46,8 +46,7 @@ class FeedFragment : Fragment() {
                         R.id.action_feedFragment_to_newPostFragment,
                     Bundle().apply {
                         textArg = text
-                    }
-                    )
+                    })
                 viewModel.edit(post)
             }
 
@@ -64,7 +63,6 @@ class FeedFragment : Fragment() {
             }
 
             override fun video(post: Post) {
-
                 val intent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     data = Uri.parse("https://www.youtube.com/watch?v=WhWc3b3KhnY")
