@@ -1,7 +1,6 @@
 package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
@@ -47,9 +46,9 @@ class PostViewHolder(
     fun bind(post: Post) {
         binding.apply {
 
-            if (post.video == ""){
-                video.visibility = View.GONE
-            }
+//            if (post.video == ""){
+//                video.visibility = View.GONE
+//            }
 
             author.text = post.author
             published.text = post.published
@@ -82,9 +81,9 @@ class PostViewHolder(
                 }.show()
             }
 
-            video.setOnClickListener {
-                onInteractionListener.video(post)
-            }
+//            video.setOnClickListener {
+//                onInteractionListener.video(post)
+//            }
             content.setOnClickListener {
                 onInteractionListener.actionOnFragment(post)
             }

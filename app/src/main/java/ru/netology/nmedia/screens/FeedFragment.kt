@@ -19,18 +19,19 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
 
+    val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
-        val viewModel: PostViewModel by viewModels(
-            ownerProducer = ::requireParentFragment
-        )
 
 
-        val interactionListener = object : OnInteractionListener {
+        val adapter = PostAdapter(object : OnInteractionListener {
 
             override fun like(post: Post) {
                 viewModel.likeById(post.id)
@@ -43,7 +44,7 @@ class FeedFragment : Fragment() {
             override fun edit(post: Post) {
                 val text = post.content
                 findNavController().navigate(
-                        R.id.action_feedFragment_to_newPostFragment,
+                    R.id.action_feedFragment_to_newPostFragment,
                     Bundle().apply {
                         textArg = text
                     })
@@ -78,17 +79,9 @@ class FeedFragment : Fragment() {
                         R.id.action_feedFragment_to_detailFragment,
                         Bundle().apply {
                             textArg = post.id.toString()
-                        }
-                       /* bundleOf(
-                            KEY_AUTHOR to author,
-                            KEY_CONTENT to content,
-                            KEY_PUBLISHED to published
-                        )*/
-                    )
+                        })
             }
-        }
-
-        val adapter = PostAdapter(interactionListener)
+        })
 
         binding.recyclerView.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { posts ->
@@ -106,8 +99,8 @@ class FeedFragment : Fragment() {
 
         return binding.root
     }
-    companion object {
 
+    companion object {
         var Bundle.textArg: String? by StringArg
     }
 
