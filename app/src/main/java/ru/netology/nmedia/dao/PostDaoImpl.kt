@@ -3,6 +3,7 @@ package ru.netology.nmedia.dao
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 
 class PostDaoImpl(private val db: SQLiteDatabase): PostDao {
@@ -16,9 +17,8 @@ class PostDaoImpl(private val db: SQLiteDatabase): PostDao {
             ${PostColumns.COLUMN_CONTENT} TEXT NOT NULL,
             ${PostColumns.COLUMN_PUBLISHED} TEXT NOT NULL,
             ${PostColumns.COLUMN_LIKED_BY_ME} BOOLEAN NOT NULL DEFAULT 0,
-            ${PostColumns.COLUMN_LIKES} INTEGER NOT NULL DEFAULT 0,
-           
-           
+            ${PostColumns.COLUMN_LIKES} INTEGER NOT NULL DEFAULT 0
+            
         );
         """.trimIndent()
     }
@@ -124,7 +124,7 @@ class PostDaoImpl(private val db: SQLiteDatabase): PostDao {
                 published = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHED)),
                 likeByMe = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0,
                 likes = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKES)),
-//                share = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_SHARES))
+ //               share = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_SHARES))
             )
         }
     }
