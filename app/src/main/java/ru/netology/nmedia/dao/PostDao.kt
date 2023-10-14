@@ -1,6 +1,8 @@
 package ru.netology.nmedia.dao
 
+import android.content.Context
 import ru.netology.nmedia.dto.Post
+
 
 interface PostDao {
 
@@ -8,5 +10,6 @@ interface PostDao {
     fun save(post: Post): Post
     fun likeById(id: Long)
     fun removeById(id: Long)
-    fun share (id: Long)
+    fun share(id: Long)
+
 }

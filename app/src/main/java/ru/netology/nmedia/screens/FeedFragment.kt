@@ -30,7 +30,6 @@ class FeedFragment : Fragment() {
     ): View {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
-
         val adapter = PostAdapter(object : OnInteractionListener {
 
             override fun like(post: Post) {
@@ -68,7 +67,6 @@ class FeedFragment : Fragment() {
                     action = Intent.ACTION_VIEW
                     data = Uri.parse("https://www.youtube.com/watch?v=WhWc3b3KhnY")
                 }
-
                 val playVideo = Intent.createChooser(intent, "play Video")
                 startActivity(playVideo)
             }
@@ -96,12 +94,10 @@ class FeedFragment : Fragment() {
         binding.addPostButton.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
-
         return binding.root
     }
 
     companion object {
         var Bundle.textArg: String? by StringArg
     }
-
 }
