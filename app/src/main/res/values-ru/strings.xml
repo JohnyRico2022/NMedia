@@ -16,4 +16,6 @@
     <string name="ok">OК</string>
     <string name="cancel">Отмена</string>
     <string name="chooser_share_post">Поделиться</string>
+    <string name="post_author">Я</string>
+    <string name="post_published">Сейчас</string>
 </resources>

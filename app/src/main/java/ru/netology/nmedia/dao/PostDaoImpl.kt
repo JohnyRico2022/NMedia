@@ -1,6 +1,7 @@
 package ru.netology.nmedia.dao
 
 import android.content.ContentValues
+import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import ru.netology.nmedia.R
@@ -65,11 +66,11 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         return posts
     }
 
-    override fun save(post: Post): Post {
+    override fun save(post: Post, context: Context): Post {
         val values = ContentValues().apply {
-            put(PostColumns.COLUMN_AUTHOR, "Me")
+            put(PostColumns.COLUMN_AUTHOR, context.getString(R.string.post_author))
             put(PostColumns.COLUMN_CONTENT, post.content)
-            put(PostColumns.COLUMN_PUBLISHED, "now")
+            put(PostColumns.COLUMN_PUBLISHED, context.getString(R.string.post_published))
             put(PostColumns.COLUMN_VIDEO, "")
         }
         val id = if (post.id != 0L) {

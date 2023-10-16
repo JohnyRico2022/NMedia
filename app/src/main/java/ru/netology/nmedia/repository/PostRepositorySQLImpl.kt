@@ -7,7 +7,7 @@ import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
 
 
-class PostRepositorySQLImpl(private val dao: PostDao) : PostRepository {
+class PostRepositorySQLImpl(private val dao: PostDao, private val context: Context) : PostRepository {
     private var posts = emptyList<Post>()
     private val data = MutableLiveData(posts)
 
@@ -48,7 +48,7 @@ class PostRepositorySQLImpl(private val dao: PostDao) : PostRepository {
 
     override fun save(post: Post) {
         val id = post.id
-        val saved = dao.save(post)
+        val saved = dao.save(post, context)
         posts = if (id == 0L) {
             listOf(saved) + posts
         } else {

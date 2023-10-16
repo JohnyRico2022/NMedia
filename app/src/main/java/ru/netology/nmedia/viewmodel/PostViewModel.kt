@@ -8,6 +8,7 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositorySQLImpl
 
+
 private val empty = Post(
     id = 0,
     author = "",
@@ -22,8 +23,7 @@ private val empty = Post(
 class PostViewModel(application: Application): AndroidViewModel(application) {
 
     private val repository: PostRepository = PostRepositorySQLImpl(
-        AppDb.getInstance(application).postDao
-    )
+        AppDb.getInstance(application).postDao, application)
 
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
