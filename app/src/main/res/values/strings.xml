@@ -15,6 +15,9 @@
     <string name="ok">OK</string>
     <string name="cancel">cancel</string>
     <string name="chooser_share_post">Share</string>
+    <string name="post_author">Me</string>
+    <string name="post_published">Now</string>
+
 
 
 
