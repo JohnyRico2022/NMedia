@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
-import ru.netology.nmedia.repository.PostRepositorySQLImpl
+import ru.netology.nmedia.repository.PostRepositoryRoomImpl
 
 
 private val empty = Post(
@@ -22,8 +22,10 @@ private val empty = Post(
 
 class PostViewModel(application: Application): AndroidViewModel(application) {
 
-    private val repository: PostRepository = PostRepositorySQLImpl(
-        AppDb.getInstance(application).postDao, application)
+    private val repository: PostRepository = PostRepositoryRoomImpl(
+        AppDb.getInstance(application).postDao
+    )
+
 
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
