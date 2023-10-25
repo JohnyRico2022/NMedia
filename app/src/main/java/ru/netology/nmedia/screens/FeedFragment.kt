@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +34,7 @@ class FeedFragment : Fragment() {
         val adapter = PostAdapter(object : OnInteractionListener {
 
             override fun like(post: Post) {
-                viewModel.likeById(post.id)
+                viewModel.likeById(post)
             }
 
             override fun remove(post: Post) {
@@ -82,13 +83,20 @@ class FeedFragment : Fragment() {
         })
 
         binding.recyclerView.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val newPost = posts.size > adapter.currentList.size
-            adapter.submitList(posts) {
-                if (newPost) {
-                    binding.recyclerView.smoothScrollToPosition(0)
-                }
+
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+
+            binding.apply {
+                progress.isVisible = state.loading
+                errorGroup.isVisible = state.error
+                empty.isVisible = state.empty
             }
+        }
+
+
+        binding.retryButton.setOnClickListener {
+            viewModel.load()
         }
 
         binding.addPostButton.setOnClickListener {

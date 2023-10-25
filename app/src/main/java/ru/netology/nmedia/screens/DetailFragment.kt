@@ -32,7 +32,7 @@ class DetailFragment : Fragment() {
         val listener = object : OnInteractionListener {
 
             override fun like(post: Post) {
-                viewModel.likeById(post.id)
+                viewModel.likeById(post)
             }
             override fun remove(post: Post) {
                 viewModel.removeById(post.id)
@@ -79,12 +79,7 @@ class DetailFragment : Fragment() {
 
         binding.post.apply{
 
-            viewModel.data.observe(viewLifecycleOwner){it ->
-                val viewHolder = PostViewHolder(binding.post, listener)
-                val post = it.find { it.id == currentPostId}
-                post?.let {
-                    viewHolder.bind(post) }
-            }
+            print(viewModel.data)
         }
         return binding.root
     }

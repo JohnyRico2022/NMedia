@@ -26,7 +26,7 @@ class NewPostFragment : Fragment() {
         )
 
        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-               viewModel.draft = binding.edit.text.toString()
+ //              viewModel.draft = binding.edit.text.toString()
                findNavController().navigateUp()
        }
 
@@ -40,15 +40,19 @@ class NewPostFragment : Fragment() {
                         val content = binding.edit.text.toString()
                         viewModel.changeContent(content)
                         viewModel.save()
-                        viewModel.draft = null
+  //                      viewModel.draft = null
+                        findNavController().navigateUp()
                     }
-                    findNavController().navigateUp()
                 }
 
-                edit.setText(
-                    if(viewModel.draft != null) viewModel.draft else arguments?.textArg
-                )
+ //               edit.setText(
+ //                   if(viewModel.draft != null) viewModel.draft else arguments?.textArg
+ //               )
             }
+//        viewModel.postCreated.observe(viewLifecycleOwner){
+//
+//        }
+
         return binding.root
     }
 

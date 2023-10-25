@@ -17,8 +17,9 @@
     <string name="chooser_share_post">Share</string>
     <string name="post_author">Me</string>
     <string name="post_published">Now</string>
-
-
+    <string name="no_posts">no_posts</string>
+    <string name="error_loading">error_loading</string>
+    <string name="retry_loading">retry_loading</string>
 
 
 </resources>

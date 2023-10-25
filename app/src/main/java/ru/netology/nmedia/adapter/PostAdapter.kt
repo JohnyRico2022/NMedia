@@ -47,7 +47,7 @@ class PostViewHolder(
     fun bind(post: Post) {
         binding.apply {
 
-            video.isVisible = post.video.isNotEmpty()
+     //       video.isVisible = post.video.isNotEmpty()
 
             author.text = post.author
             published.text = post.published
