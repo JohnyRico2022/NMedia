@@ -34,19 +34,21 @@ class PostRepositoryImpl : PostRepository {
         return gson.fromJson(responseString, postsType)
     }
 
-    /*
-    1. Добавление лайка:
-    POST
-    2. Удаление лайка:
-    DELETE /api/posts/{id}/likes
-    Где {id} — это идентификатор поста.
-    В ответ на оба запроса сервер присылает JSON обновлённого поста, который можно использовать
-    для отображения изменённого поста в ленте.
-    */
-
     override fun likeById(id: Long) {
         val request = Request.Builder()
-            .url("${BASE_URL}/api/slow/posts/$id/likes")
+            .post(gson.toJson(id).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/slow/posts/{id}/likes")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
+    }
+
+    override fun disLikeById(id: Long) {
+        val request = Request.Builder()
+            .delete(gson.toJson(id).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/slow/posts/{id}/likes")
             .build()
 
         client.newCall(request)
@@ -64,20 +66,27 @@ class PostRepositoryImpl : PostRepository {
             .execute()
             .close()
     }
+
     override fun shareCounter(id: Long) {
-        TODO("Not yet implemented")
+        val request: Request = Request.Builder()
+            .post(gson.toJson(id).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/posts/${id}/share")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
     }
 
-    override fun save(post: Post):Post {
+    override fun save(post: Post) {
         val request = Request.Builder()
             .url("${BASE_URL}posts")
             .post(gson.toJson(post).toRequestBody(jsonType))
             .build()
 
-        val call = client.newCall(request)
-        val response = call.execute()
-        val responseString = response.body?.string() ?: error("Body is null")
-        return gson.fromJson(responseString, Post::class.java)
+        client.newCall(request)
+            .execute()
+            .close()
     }
 
 }

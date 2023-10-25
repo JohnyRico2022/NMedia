@@ -32,8 +32,13 @@ class DetailFragment : Fragment() {
         val listener = object : OnInteractionListener {
 
             override fun like(post: Post) {
-                viewModel.likeById(post)
+                if (!post.likeByMe){
+                    viewModel.likeById(post.id)
+                } else {
+                    viewModel.disLikeById(post.id)
+                }
             }
+
             override fun remove(post: Post) {
                 viewModel.removeById(post.id)
                 findNavController().navigate(R.id.action_detailFragment_to_feedFragment)

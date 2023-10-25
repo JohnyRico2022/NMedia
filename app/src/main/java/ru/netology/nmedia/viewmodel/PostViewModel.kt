@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.repository.*
+import ru.netology.nmedia.util.SingleLiveEvent
 import java.io.IOException
 import kotlin.concurrent.thread
 
@@ -26,9 +27,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val _data = MutableLiveData(FeedModelState())
     val data: LiveData<FeedModelState> = _data
     val edited = MutableLiveData(emptyPost)
-    //  private val _postCreated = SingleLiveEvent<Unit>()
-//    val postCreated: LiveData<Unit>
-//        get() = _postCreated
+    private val _postCreated = SingleLiveEvent<Unit>()
+    val postCreated: LiveData<Unit>
+        get() = _postCreated
 
     init {
         load()
@@ -43,22 +44,21 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 FeedModelState(posts = posts, empty = posts.isEmpty())
             } catch (e: Exception) {
                 FeedModelState(error = true)
-            }
-                .let(_data::postValue)
+            }.let(_data::postValue)
         }
     }
 
     fun save() {
         thread {
             edited.value?.let {
-                repository.save(
-                    it
-                )
+                repository.save(it)
                 load()
+   //             _postCreated.postValue(Unit)
             }
             edited.postValue(emptyPost)
         }
     }
+
     fun removeById(id: Long) {
         thread {
             val old = _data.value?.posts.orEmpty()
@@ -86,7 +86,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun likeById(id: Long) {
         thread {
+            repository.likeById(id)
+        }
+    }
 
+    fun disLikeById(id: Long) {
+        thread {
+            repository.disLikeById(id)
         }
     }
 

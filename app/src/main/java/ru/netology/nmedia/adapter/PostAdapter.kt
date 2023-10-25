@@ -1,6 +1,7 @@
 package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -46,9 +47,6 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         binding.apply {
-
-     //       video.isVisible = post.video.isNotEmpty()
-
             author.text = post.author
             published.text = post.published
             content.text = post.content
@@ -61,6 +59,13 @@ class PostViewHolder(
             postShare.setOnClickListener {
                 onInteractionListener.share(post)
             }
+
+            if (!post.video.isNullOrEmpty()) {
+                video.visibility = View.VISIBLE
+            } else {
+                video.visibility = View.GONE
+            }
+
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.menu_options)
@@ -96,7 +101,10 @@ class PostViewHolder(
             }
         }
     }
+
+
 }
+fun onOptionsItemSelected() {}
 
 class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {

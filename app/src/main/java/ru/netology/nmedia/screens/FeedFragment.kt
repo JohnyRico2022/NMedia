@@ -34,7 +34,11 @@ class FeedFragment : Fragment() {
         val adapter = PostAdapter(object : OnInteractionListener {
 
             override fun like(post: Post) {
-                viewModel.likeById(post)
+                if (!post.likeByMe) {
+                    viewModel.likeById(post.id)
+                } else {
+                    viewModel.disLikeById(post.id)
+                }
             }
 
             override fun remove(post: Post) {
@@ -94,7 +98,6 @@ class FeedFragment : Fragment() {
             }
         }
 
-
         binding.retryButton.setOnClickListener {
             viewModel.load()
         }
@@ -102,6 +105,13 @@ class FeedFragment : Fragment() {
         binding.addPostButton.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.load()
+
+            binding.swipeRefresh.isRefreshing = false
+        }
+
         return binding.root
     }
 
