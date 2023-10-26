@@ -35,7 +35,7 @@ class FeedFragment : Fragment() {
 
             override fun like(post: Post) {
                 if (!post.likeByMe) {
-                    viewModel.likeById(post.id)
+                    viewModel.likeById(post)
                 } else {
                     viewModel.disLikeById(post.id)
                 }
@@ -56,15 +56,15 @@ class FeedFragment : Fragment() {
             }
 
             override fun share(post: Post) {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
-                val shareIntent =
-                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
-                startActivity(shareIntent)
-                viewModel.shareCounter(post.id)
+                /*              val intent = Intent().apply {
+                                  action = Intent.ACTION_SEND
+                                  putExtra(Intent.EXTRA_TEXT, post.content)
+                                  type = "text/plain"
+                              }
+                              val shareIntent =
+                                  Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                              startActivity(shareIntent)
+                              viewModel.shareCounter(post.id)*/
             }
 
             override fun video(post: Post) {
@@ -108,7 +108,6 @@ class FeedFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.load()
-
             binding.swipeRefresh.isRefreshing = false
         }
 

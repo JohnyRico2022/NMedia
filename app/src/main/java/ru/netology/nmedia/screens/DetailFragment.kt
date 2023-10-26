@@ -33,7 +33,7 @@ class DetailFragment : Fragment() {
 
             override fun like(post: Post) {
                 if (!post.likeByMe){
-                    viewModel.likeById(post.id)
+                    viewModel.likeById(post)
                 } else {
                     viewModel.disLikeById(post.id)
                 }

@@ -55,16 +55,17 @@ class PostViewHolder(
             postLikes.setOnClickListener {
                 onInteractionListener.like(post)
             }
-            postShare.text = RoundingNumbers.scoreDisplay(post.share)
+ //           postShare.text = RoundingNumbers.scoreDisplay(post.share)
             postShare.setOnClickListener {
                 onInteractionListener.share(post)
             }
+            video.visibility = View.GONE
 
-            if (!post.video.isNullOrEmpty()) {
+   /*         if (!post.video.isNullOrEmpty()) {
                 video.visibility = View.VISIBLE
             } else {
                 video.visibility = View.GONE
-            }
+            }*/
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -87,9 +88,9 @@ class PostViewHolder(
                 }.show()
             }
 
-            video.setOnClickListener {
+  /*          video.setOnClickListener {
                 onInteractionListener.video(post)
-            }
+            }*/
             content.setOnClickListener {
                 onInteractionListener.actionOnFragment(post)
             }

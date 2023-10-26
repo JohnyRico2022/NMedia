@@ -16,9 +16,7 @@ private val emptyPost = Post(
     content = "",
     published = "",
     likeByMe = false,
-    likes = 0,
-    share = 0,
-    video = ""
+    likes = 0
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
@@ -53,7 +51,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             edited.value?.let {
                 repository.save(it)
                 load()
-   //             _postCreated.postValue(Unit)
             }
             edited.postValue(emptyPost)
         }
@@ -84,9 +81,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun likeById(id: Long) {
+    fun likeById(post: Post) {
         thread {
-            repository.likeById(id)
+            repository.likeById(post.id)
+
+
+            try {
+                val posts = repository.getAll()
+                FeedModelState(posts = posts)
+            } catch (e: Exception) {
+                FeedModelState(error = true)
+            }.let(_data::postValue)
         }
     }
 
@@ -97,7 +102,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun shareCounter(id: Long) = repository.shareCounter(id)
-
 
     fun edit(post: Post) {
         edited.value = post
