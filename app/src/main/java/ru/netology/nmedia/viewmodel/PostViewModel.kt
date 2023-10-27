@@ -58,9 +58,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         thread {
             val old = _data.value?.posts.orEmpty()
             _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
-                )
+                _data.value?.copy(posts = _data.value?.posts.orEmpty().filter { it.id != id })
             )
             try {
                 repository.removeById(id)
@@ -81,13 +79,14 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun likeById(id: Long) {
         thread {
             repository.likeById(id)
+            val newList =
 
-            try {
-                val posts = repository.getAll()
-                FeedModelState(posts = posts)
-            } catch (e: Exception) {
-                FeedModelState(error = true)
-            }.let(_data::postValue)
+                try {
+                    val posts = repository.getAll()
+                    FeedModelState(posts = posts)
+                } catch (e: Exception) {
+                    FeedModelState(error = true)
+                }.let(_data::postValue)
         }
     }
 
