@@ -25,34 +25,24 @@ class NewPostFragment : Fragment() {
             ownerProducer = ::requireParentFragment
         )
 
-       requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
- //              viewModel.draft = binding.edit.text.toString()
-               findNavController().navigateUp()
-       }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
 
         arguments?.textArg?.let(binding.edit::setText)
         binding.edit.requestFocus()
 
-            binding.apply {
+        binding.apply {
 
-                ok.setOnClickListener {
-                    if (!binding.edit.text.isNullOrBlank()) {
-                        val content = binding.edit.text.toString()
-                        viewModel.changeContent(content)
-                        viewModel.save()
-  //                      viewModel.draft = null
-                        findNavController().navigateUp()
-                    }
+            ok.setOnClickListener {
+                if (!binding.edit.text.isNullOrBlank()) {
+                    val content = binding.edit.text.toString()
+                    viewModel.changeContent(content)
+                    viewModel.save()
+                    findNavController().navigateUp()
                 }
-
- //               edit.setText(
- //                   if(viewModel.draft != null) viewModel.draft else arguments?.textArg
- //               )
             }
-//        viewModel.postCreated.observe(viewLifecycleOwner){
-//
-//        }
-
+        }
         return binding.root
     }
 

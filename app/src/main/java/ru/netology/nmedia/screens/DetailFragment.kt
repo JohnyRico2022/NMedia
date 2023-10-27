@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
-import ru.netology.nmedia.adapter.PostViewHolder
 import ru.netology.nmedia.databinding.FragmentDetailBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.screens.FeedFragment.Companion.textArg
@@ -32,8 +31,8 @@ class DetailFragment : Fragment() {
         val listener = object : OnInteractionListener {
 
             override fun like(post: Post) {
-                if (!post.likeByMe){
-                    viewModel.likeById(post)
+                if (!post.likedByMe){
+                    viewModel.likeById(post.id)
                 } else {
                     viewModel.disLikeById(post.id)
                 }
