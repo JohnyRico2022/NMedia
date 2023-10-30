@@ -1,9 +1,9 @@
 package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -46,21 +46,26 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         binding.apply {
-
-            video.isVisible = post.video.isNotEmpty()
-
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            postLikes.isChecked = post.likeByMe
+            postLikes.isChecked = post.likedByMe
             postLikes.text = RoundingNumbers.scoreDisplay(post.likes)
             postLikes.setOnClickListener {
                 onInteractionListener.like(post)
             }
-            postShare.text = RoundingNumbers.scoreDisplay(post.share)
+ //           postShare.text = RoundingNumbers.scoreDisplay(post.share)
             postShare.setOnClickListener {
                 onInteractionListener.share(post)
             }
+            video.visibility = View.GONE
+
+   /*         if (!post.video.isNullOrEmpty()) {
+                video.visibility = View.VISIBLE
+            } else {
+                video.visibility = View.GONE
+            }*/
+
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.menu_options)
@@ -82,9 +87,9 @@ class PostViewHolder(
                 }.show()
             }
 
-            video.setOnClickListener {
+  /*          video.setOnClickListener {
                 onInteractionListener.video(post)
-            }
+            }*/
             content.setOnClickListener {
                 onInteractionListener.actionOnFragment(post)
             }
@@ -96,7 +101,10 @@ class PostViewHolder(
             }
         }
     }
+
+
 }
+fun onOptionsItemSelected() {}
 
 class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {

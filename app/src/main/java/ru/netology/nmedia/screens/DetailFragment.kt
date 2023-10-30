@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
-import ru.netology.nmedia.adapter.PostViewHolder
 import ru.netology.nmedia.databinding.FragmentDetailBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.screens.FeedFragment.Companion.textArg
@@ -32,8 +31,13 @@ class DetailFragment : Fragment() {
         val listener = object : OnInteractionListener {
 
             override fun like(post: Post) {
-                viewModel.likeById(post.id)
+                if (!post.likedByMe){
+                    viewModel.likeById(post.id)
+                } else {
+                    viewModel.disLikeById(post.id)
+                }
             }
+
             override fun remove(post: Post) {
                 viewModel.removeById(post.id)
                 findNavController().navigate(R.id.action_detailFragment_to_feedFragment)
@@ -79,12 +83,7 @@ class DetailFragment : Fragment() {
 
         binding.post.apply{
 
-            viewModel.data.observe(viewLifecycleOwner){it ->
-                val viewHolder = PostViewHolder(binding.post, listener)
-                val post = it.find { it.id == currentPostId}
-                post?.let {
-                    viewHolder.bind(post) }
-            }
+            print(viewModel.data)
         }
         return binding.root
     }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +34,11 @@ class FeedFragment : Fragment() {
         val adapter = PostAdapter(object : OnInteractionListener {
 
             override fun like(post: Post) {
-                viewModel.likeById(post.id)
+                if (!post.likedByMe) {
+                    viewModel.likeById(post.id)
+                } else {
+                    viewModel.disLikeById(post.id)
+                }
             }
 
             override fun remove(post: Post) {
@@ -51,15 +56,15 @@ class FeedFragment : Fragment() {
             }
 
             override fun share(post: Post) {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
-                val shareIntent =
-                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
-                startActivity(shareIntent)
-                viewModel.shareCounter(post.id)
+                /*              val intent = Intent().apply {
+                                  action = Intent.ACTION_SEND
+                                  putExtra(Intent.EXTRA_TEXT, post.content)
+                                  type = "text/plain"
+                              }
+                              val shareIntent =
+                                  Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                              startActivity(shareIntent)
+                              viewModel.shareCounter(post.id)*/
             }
 
             override fun video(post: Post) {
@@ -82,18 +87,30 @@ class FeedFragment : Fragment() {
         })
 
         binding.recyclerView.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val newPost = posts.size > adapter.currentList.size
-            adapter.submitList(posts) {
-                if (newPost) {
-                    binding.recyclerView.smoothScrollToPosition(0)
-                }
+
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+
+            binding.apply {
+                progress.isVisible = state.loading
+                errorGroup.isVisible = state.error
+                empty.isVisible = state.empty
             }
+        }
+
+        binding.retryButton.setOnClickListener {
+            viewModel.load()
         }
 
         binding.addPostButton.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.load()
+            binding.swipeRefresh.isRefreshing = false
+        }
+
         return binding.root
     }
 
