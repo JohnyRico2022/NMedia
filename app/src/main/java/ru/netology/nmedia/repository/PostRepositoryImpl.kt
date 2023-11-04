@@ -21,12 +21,12 @@ class PostRepositoryImpl : PostRepository {
         .build()
     private val gson = Gson()
     private val typeToken = object : TypeToken<List<Post>>() {}
+    private val typeTokenOne = object : TypeToken<Post>() {}
 
     private companion object {
         const val BASE_URL = "http://10.0.2.2:9999/api/slow/"
         val jsonType = "application/json".toMediaType()
     }
-
 
 
     override fun getAllAsync(callback: PostRepository.RepositoryCallback<List<Post>>) {
@@ -52,6 +52,7 @@ class PostRepositoryImpl : PostRepository {
             })
     }
 
+
     override fun likeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
         val request = Request.Builder()
             .url("${BASE_URL}posts/${id}/likes")
@@ -64,7 +65,7 @@ class PostRepositoryImpl : PostRepository {
                 override fun onResponse(call: Call, response: Response) {
                     try {
                         val body = response.body?.string() ?: throw RuntimeException("body is null")
-                        callback.onSuccess(gson.fromJson(body, typeToken.type))
+                        callback.onSuccess(gson.fromJson(body, typeTokenOne.type))
                     } catch (e: Exception) {
                         callback.onError(e)
                     }
@@ -88,7 +89,7 @@ class PostRepositoryImpl : PostRepository {
                 override fun onResponse(call: Call, response: Response) {
                     try {
                         val body = response.body?.string() ?: throw RuntimeException("body is null")
-                        callback.onSuccess(gson.fromJson(body, typeToken.type))
+                        callback.onSuccess(gson.fromJson(body, typeTokenOne.type))
                     } catch (e: Exception) {
                         callback.onError(e)
                     }
@@ -111,23 +112,18 @@ class PostRepositoryImpl : PostRepository {
             .close()
     }
 
-    override fun removeByIdAsync(id: Long, callback: PostRepository.RepositoryCallback<Post>) {
+    override fun removeByIdAsync(id: Long, callback: PostRepository.RepositoryCallbackId) {
         val request: Request = Request.Builder()
             .url("${BASE_URL}posts/${id}")
             .delete()
             .build()
+
         client.newCall(request)
             .enqueue(object : Callback {
 
                 override fun onResponse(call: Call, response: Response) {
-                    try {
-                        val body = response.body?.string() ?: throw RuntimeException("body is null")
-                        callback.onSuccess(gson.fromJson(body, typeToken.type))
-                    } catch (e: Exception) {
-                        callback.onError(e)
-                    }
+                    callback.onSuccess(id)
                 }
-
                 override fun onFailure(call: Call, e: IOException) {
                     callback.onError(e)
                 }
