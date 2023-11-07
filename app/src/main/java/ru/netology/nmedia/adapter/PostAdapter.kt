@@ -60,6 +60,10 @@ class PostViewHolder(
             }
             video.visibility = View.GONE
 
+
+
+
+
    /*         if (!post.video.isNullOrEmpty()) {
                 video.visibility = View.VISIBLE
             } else {
