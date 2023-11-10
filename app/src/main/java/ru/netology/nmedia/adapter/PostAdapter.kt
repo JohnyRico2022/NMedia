@@ -7,6 +7,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.util.RoundingNumbers
 import ru.netology.nmedia.databinding.CardPostBinding
@@ -45,26 +46,42 @@ class PostViewHolder(
 
 
     fun bind(post: Post) {
+        val baseUrl = "http://10.0.2.2:9999"
+
         binding.apply {
             author.text = post.author
-            published.text = post.published
+            published.text = post.published.toString()
             content.text = post.content
             postLikes.isChecked = post.likedByMe
             postLikes.text = RoundingNumbers.scoreDisplay(post.likes)
             postLikes.setOnClickListener {
                 onInteractionListener.like(post)
             }
- //           postShare.text = RoundingNumbers.scoreDisplay(post.share)
+            //           postShare.text = RoundingNumbers.scoreDisplay(post.share)
             postShare.setOnClickListener {
                 onInteractionListener.share(post)
             }
-            video.visibility = View.GONE
+            attachment.visibility = View.GONE
 
-   /*         if (!post.video.isNullOrEmpty()) {
-                video.visibility = View.VISIBLE
+            if (post.attachment == null) {
+                attachment.visibility = View.GONE
             } else {
-                video.visibility = View.GONE
-            }*/
+                attachment.visibility = View.VISIBLE
+            }
+
+            Glide.with(avatar)
+                .load("$baseUrl/avatars/${post.authorAvatar}")
+                .error(R.drawable.ic_error_24)
+                .placeholder(R.drawable.ic_downloading_24)
+                .circleCrop()
+                .timeout(10_000)
+                .into(avatar)
+
+            Glide.with(attachment)
+                .load("$baseUrl/images/${post.attachment?.url}")
+                .timeout(10_000)
+                .into(attachment)
+
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -86,10 +103,6 @@ class PostViewHolder(
                     }
                 }.show()
             }
-
-  /*          video.setOnClickListener {
-                onInteractionListener.video(post)
-            }*/
             content.setOnClickListener {
                 onInteractionListener.actionOnFragment(post)
             }
@@ -101,9 +114,8 @@ class PostViewHolder(
             }
         }
     }
-
-
 }
+
 fun onOptionsItemSelected() {}
 
 class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {

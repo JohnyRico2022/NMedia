@@ -12,7 +12,7 @@ private val emptyPost = Post(
     id = 0,
     author = "",
     content = "",
-    published = "",
+    published = 0,
     likedByMe = false,
     likes = 0
 )
@@ -49,12 +49,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             repository.saveAsync(newPost, object : PostRepository.RepositoryCallback<Post> {
                 override fun onSuccess(result: Post) {
                     _postCreated.postValue(Unit)
-                    _data.postValue(FeedModelState(posts = new, loading = true))
+                    _data.postValue(FeedModelState(posts = new))
+                    load()
                 }
 
                 override fun onError(e: Exception) {
                     _data.postValue(FeedModelState(error = true))
-                  load()
                 }
             })
         }
@@ -70,7 +70,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
             override fun onError(e: Exception) {
                 _data.postValue(FeedModelState(error = true))
-   //             load()
             }
         })
     }
@@ -102,7 +101,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
             override fun onError(e: Exception) {
                 _data.postValue(FeedModelState(error = true))
-  //              load()
             }
         })
     }
@@ -126,13 +124,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
             override fun onError(e: Exception) {
                 _data.postValue(FeedModelState(error = true))
-  //              load()
             }
         })
     }
 
     fun shareCounter(id: Long) {
-
     }
 
     fun edit(post: Post) {
