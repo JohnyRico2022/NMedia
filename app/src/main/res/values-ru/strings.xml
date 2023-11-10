@@ -19,6 +19,8 @@
     <string name="post_author">Я</string>
     <string name="post_published">Сейчас</string>
     <string name="no_posts">нет постов</string>
-    <string name="error_loading">error_loading</string>
-    <string name="retry_loading">retry_loading</string>
+    <string name="error_loading">Ошибка загрузки</string>
+    <string name="retry_loading">Перезагрузить</string>
+    <string name="Toast_error">Произошла ошибка! Повторите попытку</string>
+    <string name="network_error">Неполадки с сетью!</string>
 </resources>

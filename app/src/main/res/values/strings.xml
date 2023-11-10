@@ -13,13 +13,14 @@
     <string name="edit_message">Edit Message</string>
     <string name="add_post">Add new post</string>
     <string name="ok">OK</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="chooser_share_post">Share</string>
     <string name="post_author">Me</string>
     <string name="post_published">Now</string>
     <string name="no_posts">no_posts</string>
     <string name="error_loading">error_loading</string>
     <string name="retry_loading">retry_loading</string>
-
+    <string name="Toast_error">An error has occurred! Try again</string>
+    <string name="network_error">Network error!</string>
 
 </resources>
