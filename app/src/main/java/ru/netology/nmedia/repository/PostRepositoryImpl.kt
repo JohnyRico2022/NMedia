@@ -37,6 +37,7 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         try {
             val response = PostsApi.service.likeById(id)
             if (!response.isSuccessful) {
+                dao.likeById(id)
                 throw ApiError(response.code(), response.message())
   //              dao.likeById(id)
             }
@@ -55,6 +56,7 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         try {
             val response = PostsApi.service.disLikeById(id)
             if (!response.isSuccessful) {
+                dao.likeById(id)
                 throw ApiError(response.code(), response.message())
    //             dao.likeById(id)
             }
