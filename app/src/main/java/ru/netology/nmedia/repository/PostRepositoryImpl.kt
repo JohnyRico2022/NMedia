@@ -39,11 +39,11 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
             if (!response.isSuccessful) {
                 dao.likeById(id)
                 throw ApiError(response.code(), response.message())
-  //              dao.likeById(id)
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
+            dao.likeById(id)
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
@@ -58,12 +58,12 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
             if (!response.isSuccessful) {
                 dao.likeById(id)
                 throw ApiError(response.code(), response.message())
-   //             dao.likeById(id)
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(PostEntity.fromDto(body))
 
         } catch (e: IOException) {
+            dao.likeById(id)
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
@@ -71,11 +71,9 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
     }
 
     override suspend fun removeById(id: Long) {
-        // сначало база данных
         dao.removeById(id)
 
         try {
-            // потом запрос в сеть
             val response = PostsApi.service.removeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
