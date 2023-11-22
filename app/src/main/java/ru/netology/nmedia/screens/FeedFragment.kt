@@ -78,7 +78,7 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
-                Snackbar.make(binding.root, R.string.Toast_error, Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(binding.root, R.string.network_error, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.retry_loading) { viewModel.load() }
                     .show()
             }

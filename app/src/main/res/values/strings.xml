@@ -20,7 +20,6 @@
     <string name="no_posts">no_posts</string>
     <string name="error_loading">error_loading</string>
     <string name="retry_loading">retry_loading</string>
-    <string name="Toast_error">An error has occurred! Try again</string>
     <string name="network_error">Network error!</string>
 
 </resources>

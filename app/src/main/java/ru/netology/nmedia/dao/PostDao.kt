@@ -22,6 +22,14 @@ interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(posts: List<PostEntity>)
 
+    @Query("""
+        UPDATE PostEntity SET
+               likes = likes + CASE WHEN likedByMe THEN -1 ELSE 1 END,
+               likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
+           WHERE id = :id;
+    """)
+    suspend fun likeById(id: Long)
+
     @Query("DELETE FROM PostEntity WHERE id = :id")
    suspend fun removeById(id: Long)
 }

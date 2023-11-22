@@ -76,8 +76,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun removeById(id: Long) {
-
-
         viewModelScope.launch {
             try {
                 repository.removeById(id)
