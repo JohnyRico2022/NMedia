@@ -22,4 +22,5 @@
     <string name="error_loading">Ошибка загрузки</string>
     <string name="retry_loading">Перезагрузить</string>
     <string name="network_error">Ошибка сети!</string>
+    <string name="newer_posts">Свежие записи</string>
 </resources>
