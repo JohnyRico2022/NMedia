@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +15,9 @@ import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.entity.PostEntity
+import ru.netology.nmedia.model.FeedModel
+import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -70,32 +74,31 @@ class FeedFragment : Fragment() {
 
         binding.recyclerView.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
-
-            binding.apply {
-                progress.isVisible = state.loading
-                errorGroup.isVisible = state.error
-                empty.isVisible = state.empty
-            }
-
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.progress.isVisible = state.loading
+            binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
-                val recycler = binding.recyclerView
-                Snackbar.make(recycler,R.string.Toast_error,Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.retry_loading){
-                        viewModel.load()
-                    }
+                Snackbar.make(binding.root, R.string.network_error, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.retry_loading) { viewModel.load() }
                     .show()
             }
         }
 
-        binding.addPostButton.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+            binding.empty.isVisible = state.empty
         }
 
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.load()
-            binding.swipeRefresh.isRefreshing = false
+        binding.apply {
+
+            addPostButton.setOnClickListener {
+                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            }
+
+            swipeRefresh.setOnRefreshListener {
+                viewModel.load()
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
 
         return binding.root

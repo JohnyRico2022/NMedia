@@ -2,7 +2,7 @@ package ru.netology.nmedia.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -17,19 +17,19 @@ private const val BASE_URL = "http://10.0.2.2:9999/api/slow/"
 interface PostsApiService {
 
     @GET("posts")
-    fun getAll(): Call<List<Post>>
+    suspend fun getAll(): Response<List<Post>>
 
     @POST("posts/{id}/likes")
-    fun likeByIdAsync(@Path("id") id: Long): Call<Post>
+    suspend fun likeById(@Path("id") id: Long): Response<Post>
 
     @DELETE("posts/{id}/likes")
-    fun disLikeByIdAsync(@Path("id") id: Long): Call<Post>
+    suspend fun disLikeById(@Path("id") id: Long): Response<Post>
 
     @DELETE("posts/{id}")
-    fun removeByIdAsync(@Path("id") id: Long): Call<Unit>
+    suspend fun removeById(@Path("id") id: Long): Response<Unit>
 
     @POST("posts")
-    fun saveAsync(@Body post: Post): Call<Post>
+    suspend fun save(@Body post: Post): Response<Post>
 
 }
 
@@ -46,7 +46,7 @@ val retrofit = Retrofit.Builder()
     .build()
 
 object PostsApi {
-    val retrofitService by lazy {
+    val service: PostsApiService by lazy {
         retrofit.create(PostsApiService::class.java)
     }
 }
