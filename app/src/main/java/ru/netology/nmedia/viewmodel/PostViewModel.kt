@@ -62,7 +62,33 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun makePostShowed() = viewModelScope.launch{
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.makePostShowed()
+            _dataState.value = FeedModelState()
+
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun getUnreadPosts() = viewModelScope.launch{
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.getUnreadPosts()
+            _dataState.value = FeedModelState()
+
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+
+
     fun refreshPosts() = viewModelScope.launch {
+
+
         try {
             _dataState.value = FeedModelState(refreshing = true)
             repository.getAll()

@@ -7,6 +7,8 @@ interface PostRepository {
     val data: Flow<List<Post>>
     fun  getNewer(id:Long): Flow<Int>
     suspend fun getAll()
+    suspend fun getUnreadPosts()
+    suspend fun makePostShowed()
     suspend fun likeById(id: Long)
     suspend fun disLikeById(id: Long)
     suspend fun removeById(id: Long)

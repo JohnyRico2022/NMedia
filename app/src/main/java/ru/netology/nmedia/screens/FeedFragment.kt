@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -82,25 +83,29 @@ class FeedFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
 
-            val newPost = state.posts.size > adapter.currentList.size && adapter.itemCount > 0
-            if(newPost){
-                binding.newerPosts.visibility = View.VISIBLE
-            }
-            adapter.submitList(state.posts){
-
+            adapter.submitList(state.posts) {
             }
             binding.empty.isVisible = state.empty
         }
 
-        viewModel.newerCount.observe(viewLifecycleOwner) {state ->
-            //текущее значение это кол-во новых постов, на экран ввиде кнопки это ДЗ
-
-println()
+        viewModel.newerCount.observe(viewLifecycleOwner) { state ->
+            if(state>0){
+                binding.newerPosts.visibility = View.VISIBLE
+            }
+            println()
         }
 
+        adapter.registerAdapterDataObserver(object  : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.recyclerView.smoothScrollToPosition(0)
+            }
+        })
+
         binding.newerPosts.setOnClickListener {
-            binding.recyclerView.smoothScrollToPosition(0)
+            viewModel.makePostShowed()
+            viewModel.getUnreadPosts()
             binding.newerPosts.visibility = View.GONE
+
         }
 
         binding.apply {
@@ -111,7 +116,6 @@ println()
 
             swipeRefresh.setOnRefreshListener {
                 viewModel.refreshPosts()
-    //            binding.swipeRefresh.isRefreshing = false
             }
         }
 

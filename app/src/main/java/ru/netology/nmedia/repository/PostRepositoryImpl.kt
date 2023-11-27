@@ -24,7 +24,7 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         .flowOn(Dispatchers.Default)
 
     override fun getNewer(id: Long): Flow<Int> = flow {
-        while (true){
+        while (true) {
             delay(10_000L)
             val response = PostsApi.service.getNewer(id)
             if (!response.isSuccessful) {
@@ -40,6 +40,9 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         .flowOn(Dispatchers.Default)
 
     override suspend fun getAll() {
+        dao.makePostShowed()
+        dao.getAll()
+
         try {
             val response = PostsApi.service.getAll()
             if (!response.isSuccessful) {
@@ -54,6 +57,14 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         } catch (e: Exception) {
             throw UnknownError
         }
+    }
+
+    override suspend fun getUnreadPosts() {
+        dao.getUnreadPosts()
+    }
+
+    override suspend fun makePostShowed() {
+        dao.makePostShowed()
     }
 
     override suspend fun likeById(id: Long) {
