@@ -63,11 +63,11 @@ class PostViewHolder(
             }
             attachment.visibility = View.GONE
 
-            if (post.attachment == null) {
+           /* if (post.attachment == null) {
                 attachment.visibility = View.GONE
             } else {
                 attachment.visibility = View.VISIBLE
-            }
+            }*/
 
             Glide.with(avatar)
                 .load("$baseUrl/avatars/${post.authorAvatar}")
@@ -77,11 +77,11 @@ class PostViewHolder(
                 .timeout(10_000)
                 .into(avatar)
 
-            Glide.with(attachment)
+          /*  Glide.with(attachment)
                 .load("$baseUrl/images/${post.attachment?.url}")
                 .timeout(10_000)
                 .into(attachment)
-
+*/
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {

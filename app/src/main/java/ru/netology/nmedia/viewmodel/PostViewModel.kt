@@ -2,6 +2,9 @@ package ru.netology.nmedia.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Post
@@ -25,7 +28,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PostRepository =
         PostRepositoryImpl(AppDb.getInstance(context = application).postDao)
 
-    val data: LiveData<FeedModel> = repository.data.map(::FeedModel)
+    val data: LiveData<FeedModel> = repository.data
+        .map(::FeedModel)
+        .catch { it.printStackTrace() }
+        .asLiveData(Dispatchers.Default)
+
+    val newerCount = data.switchMap {
+        repository.getNewer(it.posts.firstOrNull()?.id ?: 0L)
+            .asLiveData(Dispatchers.Default, 100)
+    }
+
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
@@ -50,7 +62,33 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun makePostShowed() = viewModelScope.launch{
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.makePostShowed()
+            _dataState.value = FeedModelState()
+
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun getUnreadPosts() = viewModelScope.launch{
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.getUnreadPosts()
+            _dataState.value = FeedModelState()
+
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+
+
     fun refreshPosts() = viewModelScope.launch {
+
+
         try {
             _dataState.value = FeedModelState(refreshing = true)
             repository.getAll()

@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.entity.PostEntity
-import ru.netology.nmedia.model.FeedModel
-import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -85,8 +82,30 @@ class FeedFragment : Fragment() {
         }
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+
+            adapter.submitList(state.posts) {
+            }
             binding.empty.isVisible = state.empty
+        }
+
+        viewModel.newerCount.observe(viewLifecycleOwner) { state ->
+            if(state>0){
+                binding.newerPosts.visibility = View.VISIBLE
+            }
+            println()
+        }
+
+        adapter.registerAdapterDataObserver(object  : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.recyclerView.smoothScrollToPosition(0)
+            }
+        })
+
+        binding.newerPosts.setOnClickListener {
+            viewModel.makePostShowed()
+            viewModel.getUnreadPosts()
+            binding.newerPosts.visibility = View.GONE
+
         }
 
         binding.apply {
@@ -96,8 +115,7 @@ class FeedFragment : Fragment() {
             }
 
             swipeRefresh.setOnRefreshListener {
-                viewModel.load()
-                binding.swipeRefresh.isRefreshing = false
+                viewModel.refreshPosts()
             }
         }
 
